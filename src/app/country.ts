@@ -21,8 +21,9 @@ interface Reponse {
 @Injectable({ providedIn: 'root' })
 export class Country {
   private http = inject(HttpClient);
-  private baseUrl = 'https://api.restcountries.com/countries/v5';
-  private apiKey = 'rc_live_e5fbf64a9cf64cea9aa17e206239643e';
+  private baseUrl = 'https://api.restcountries.com/countries/v5'; 
+  private apiKey =  'rc_live_e5fbf64a9cf64cea9aa17e206239643e'
+  
   private fields =
     'names.common,codes.alpha_2,capitals,population,flag.url_png,flag.url_svg,flag.description,links.google_maps,coordinates,area.kilometers,languages';
 
