@@ -1,0 +1,44 @@
+<header class="header">
+  <h1>Pays du monde</h1>
+  <input class="search" placeholder="Rechercher un pays"
+         (input)="search.set($any($event.target).value)">
+</header>
+
+<main class="container">
+  @if (loading()) { <p class="message">Chargement...</p> }
+  @if (error()) { <p class="message error">{{ error() }}</p> }
+
+  <section class="grid">
+    @for (c of filtered(); track c.names.common) {
+      <article class="card" (click)="toggleMap(c)">
+        <div class="card-main">
+
+          @if (hasFlagFailed(c)) {
+            <div class="no-flag">🏳️<br>Drapeau indisponible</div>
+          } @else {
+            <img [src]="flagUrl(c)" [alt]="c.flag.description ?? 'Drapeau'"
+                 (error)="onFlagError($event, c)">
+          }
+
+          <div class="info">
+            <h3>{{ c.names.common }}</h3>
+            <p><strong>Capitale :</strong> {{ c.capitals?.[0]?.name ?? '—' }}</p>
+            <p><strong>Population :</strong> {{ c.population | number }}</p>
+            <p><strong>Superficie :</strong> {{ c.area?.kilometers | number }} km²</p>
+            <p><strong>Latitude :</strong> {{ c.coordinates.lat | number:'1.2-2' }}°</p>
+            <p><strong>Longitude :</strong> {{ c.coordinates.lng | number:'1.2-2' }}°</p>
+            <p><strong>Langues :</strong> {{ langues(c) }}</p>
+            <a [href]="c.links.google_maps" target="_blank" rel="noopener"
+               (click)="$event.stopPropagation()">
+              Ouvrir dans Google Maps
+            </a>
+          </div>
+        </div>
+
+        @if (isSelected(c)) {
+          <iframe class="map" [src]="mapUrl()" title="Carte de {{ c.names.common }}"></iframe>
+        }
+      </article>
+    }
+  </section>
+</main>
